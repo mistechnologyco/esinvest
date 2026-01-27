@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ES INVEST | Lüks Gayrimenkul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #D4AF37;
+    --gold-light: #F4E4C1;
+    --dark: #0a0a0a;
+    --dark-soft: #1a1a1a;
+    --white: #ffffff;
+    --white-soft: #f5f5f5;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background: var(--dark);
+    color: var(--white);
+    font-family: 'Jost', sans-serif;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Subtle fog/blur overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 30% 40%, rgba(26, 26, 26, 0.4) 0%, transparent 60%),
+      radial-gradient(circle at 70% 60%, rgba(26, 26, 26, 0.3) 0%, transparent 60%),
+      radial-gradient(circle at 50% 80%, rgba(26, 26, 26, 0.5) 0%, transparent 50%);
+    backdrop-filter: blur(80px);
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  /* ANIMATED BACKGROUND */
+  .silhouette-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Floating particles */
+  .particles {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: rgba(212, 175, 55, 0.4);
+    border-radius: 50%;
+    animation: float linear infinite;
+  }
+
+  /* Stars background */
+  .stars {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    animation: twinkle ease-in-out infinite;
+    box-shadow: 0 0 2px rgba(255, 255, 255, 0.3);
+  }
+
+  @keyframes twinkle {
+    0%, 100% { 
+      opacity: 0.1;
+      transform: scale(1);
+    }
+    50% { 
+      opacity: 0.4;
+      transform: scale(1.5);
+    }
+  }
+
+  .star.shooting {
+    width: 2px;
+    height: 2px;
+    animation: shoot 3s linear infinite;
+  }
+
+  @keyframes shoot {
+    0% {
+      transform: translateX(0) translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(-200px) translateY(200px);
+      opacity: 0;
+    }
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(100vh) translateX(0);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-10vh) translateX(var(--drift));
+      opacity: 0;
+    }
+  }
+
+  .silhouette-clip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    clip-path: polygon(
+      0% 100%,
+      0% 10%,
+      2% 12%,
+      4% 14%,
+      6% 16%,
+      8% 18%,
+      10% 20%,
+      12% 22%,
+      16% 26%,
+      20% 31%,
+      24% 36%,
+      28% 42%,
+      32% 48%,
+      36% 54%,
+      40% 58%,
+      44% 61%,
+      48% 63%,
+      52% 64%,
+      56% 63%,
+      60% 61%,
+      64% 58%,
+      68% 54%,
+      72% 50%,
+      76% 46%,
+      80% 42%,
+      84% 38%,
+      88% 35%,
+      90% 34%,
+      92% 33%,
+      94% 32%,
+      96% 31%,
+      98% 30%,
+      100% 29%,
+      100% 100%
+    );
+  }
+
+  /* Gradient fade effect at the bottom */
+  .silhouette-clip::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 250px;
+    background: 
+      linear-gradient(to bottom, 
+        transparent 0%, 
+        rgba(10, 10, 10, 0.3) 20%,
+        rgba(10, 10, 10, 0.6) 40%,
+        rgba(10, 10, 10, 0.85) 60%,
+        #0a0a0a 100%
+      );
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .line {
+    position: absolute;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: rgba(255,255,255,0.35);
+    opacity: 0.35;
+    transform-origin: center;
+    animation: drift 3s ease-in-out infinite;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+  }
+
+  .line:nth-child(3n) {
+    background: rgba(212, 175, 55, 0.25);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+  }
+
+  @keyframes drift {
+    0%   { transform: translateX(0px); }
+    50%  { transform: translateX(3px); }
+    100% { transform: translateX(0px); }
+  }
+
+  /* MAIN CONTENT */
+  .content-wrapper {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* NAVIGATION */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    background: linear-gradient(180deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0) 100%);
+    animation: navFadeIn 1s ease-out;
+  }
+
+  @keyframes navFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    animation: logoGlow 3s ease-in-out infinite;
+  }
+
+  .logo img {
+    height: 80px;
+    width: auto;
+    filter: brightness(1.2);
+    transition: all 0.3s ease;
+  }
+
+  .logo img:hover {
+    filter: brightness(1.4);
+    transform: scale(1.05);
+  }
+
+  @keyframes logoGlow {
+    0%, 100% { text-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+    50% { text-shadow: 0 0 30px rgba(212, 175, 55, 0.5); }
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 3rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--gold);
+    transition: width 0.3s ease;
+  }
+
+  .nav-links a:hover {
+    color: var(--gold);
+  }
+
+  .nav-links a:hover::after {
+    width: 100%;
+  }
+
+  /* HERO SECTION */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 2rem;
+    position: relative;
+    background: transparent;
+  }
+
+  .hero-content {
+    max-width: 900px;
+    animation: heroFadeIn 1.5s ease-out 0.3s both;
+  }
+
+  @keyframes heroFadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  .hero h1 .highlight {
+    display: block;
+    font-weight: 300;
+    color: var(--gold);
+    font-style: normal;
+    font-family: 'Cormorant Garamond', serif;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    text-shadow: 0 0 40px rgba(212, 175, 55, 0.5);
+    background: linear-gradient(135deg, #D4AF37 0%, #F4E4C1 50%, #D4AF37 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+  }
+
+  .hero h1 .highlight::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    opacity: 0.9;
+  }
+
+  .cta-button {
+    display: inline-block;
+    padding: 1.2rem 3rem;
+    background: transparent;
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .cta-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--gold);
+    transition: left 0.4s ease;
+    z-index: -1;
+  }
+
+  .cta-button:hover {
+    color: var(--dark);
+  }
+
+  .cta-button:hover::before {
+    left: 0;
+  }
+
+  /* ABOUT SECTION */
+  .about {
+    padding: 8rem 4rem;
+    position: relative;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  .section-subtitle {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 5rem;
+  }
+
+  .about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .about-content {
+    text-align: center;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 3rem;
+    margin: 4rem 0;
+  }
+
+  .about-feature {
+    padding: 3rem 2rem;
+    background: rgba(26, 26, 26, 0.4);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    transition: all 0.5s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-feature::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+    transition: left 0.6s ease;
+  }
+
+  .about-feature:hover::before {
+    left: 100%;
+  }
+
+  .about-feature:hover {
+    transform: translateY(-10px);
+    border-color: rgba(212, 175, 55, 0.5);
+    box-shadow: 0 20px 60px rgba(212, 175, 55, 0.2);
+  }
+
+  .feature-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 1.5rem;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    position: relative;
+    transition: all 0.4s ease;
+  }
+
+  .feature-icon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    background: var(--gold);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    transition: all 0.4s ease;
+  }
+
+  .about-feature:nth-child(2) .feature-icon::before {
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  }
+
+  .about-feature:nth-child(3) .feature-icon::before {
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  }
+
+  .about-feature:hover .feature-icon {
+    transform: scale(1.1) rotate(10deg);
+    border-color: var(--gold-light);
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+  }
+
+  .about-feature:hover .feature-icon::before {
+    transform: translate(-50%, -50%) scale(1.2);
+    filter: brightness(1.5);
+  }
+
+  .about-feature h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  .about-feature p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 300;
+  }
+
+  .about-text {
+    max-width: 900px;
+    margin: 4rem auto;
+    text-align: center;
+    padding: 3rem;
+    background: rgba(26, 26, 26, 0.3);
+    backdrop-filter: blur(10px);
+    border-left: 3px solid var(--gold);
+    border-right: 3px solid var(--gold);
+  }
+
+  .about-text p {
+    font-size: 1.1rem;
+    line-height: 2;
+    margin-bottom: 2rem;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 300;
+  }
+
+  .about-text strong {
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 3rem;
+    margin-top: 5rem;
+    padding: 3rem 0;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-label {
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* SERVICES SECTION */
+  .services {
+    padding: 8rem 4rem;
+    position: relative;
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.3) 0%, rgba(10, 10, 10, 0.8) 100%);
+  }
+
+  .services-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 3rem;
+    margin-top: 5rem;
+  }
+
+  .service-card {
+    padding: 3rem 2.5rem;
+    background: rgba(26, 26, 26, 0.6);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 8px;
+    transition: all 0.5s ease;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+    transition: left 0.8s ease;
+  }
+
+  .service-card:hover::before {
+    left: 100%;
+  }
+
+  .service-card:hover {
+    transform: translateY(-15px);
+    border-color: rgba(212, 175, 55, 0.6);
+    box-shadow: 0 25px 80px rgba(212, 175, 55, 0.25);
+    background: rgba(26, 26, 26, 0.8);
+  }
+
+  .service-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 2rem;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    position: relative;
+    transition: all 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
+  }
+
+  .service-icon svg {
+    width: 36px;
+    height: 36px;
+    color: var(--gold);
+    transition: all 0.4s ease;
+  }
+
+  .service-card:hover .service-icon {
+    transform: scale(1.15) rotate(5deg);
+    border-color: var(--gold-light);
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.5);
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
+  }
+
+  .service-card:hover .service-icon svg {
+    transform: scale(1.1);
+    filter: brightness(1.3);
+  }
+
+  .service-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .service-card p {
+    font-size: 1.1rem;
+    line-height: 1.9;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 300;
+    margin-bottom: 2rem;
+  }
+
+  .service-features {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+  }
+
+  .service-features li {
+    padding: 0.5rem 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+    position: relative;
+    padding-left: 1.5rem;
+  }
+
+  .service-features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+
+  /* CONTACT SECTION */
+  .contact {
+    padding: 8rem 4rem;
+    position: relative;
+  }
+
+  .contact-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .contact-content {
+    margin-top: 5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+
+  .contact-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .contact-map {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    border: 2px solid rgba(212, 175, 55, 0.3);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .contact-map iframe {
+    filter: grayscale(1) invert(0.92) contrast(0.9);
+  }
+
+  .contact-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+    padding: 3rem 2rem;
+    background: rgba(26, 26, 26, 0.4);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    transition: all 0.4s ease;
+  }
+
+  .contact-item:hover {
+    transform: translateY(-10px);
+    border-color: rgba(212, 175, 55, 0.5);
+    box-shadow: 0 20px 60px rgba(212, 175, 55, 0.15);
+    background: rgba(26, 26, 26, 0.6);
+  }
+
+  .contact-icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.05) 100%);
+    border-radius: 50%;
+    border: 2px solid rgba(212, 175, 55, 0.3);
+    transition: all 0.4s ease;
+    color: var(--gold);
+  }
+
+  .contact-icon svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .contact-item:hover .contact-icon {
+    transform: scale(1.1);
+    border-color: var(--gold);
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+  }
+
+  .contact-details h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .contact-details p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 300;
+  }
+
+  /* Remove unused form styles */
+  .contact-form,
+  .form-row,
+  .submit-button {
+    display: none;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 4rem;
+    text-align: center;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    margin-top: 4rem;
+  }
+
+  .footer-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    margin-bottom: 2rem;
+  }
+
+  .footer-text {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 2rem;
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    list-style: none;
+    margin-bottom: 2rem;
+  }
+
+  .footer-links a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+  }
+
+  .footer-links a:hover {
+    color: var(--gold);
+  }
+
+  .copyright {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.1em;
+  }
+
+  .prod-by {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    transition: color 0.3s ease;
+    margin-top: 0.5rem;
+    display: inline-block;
+  }
+
+  .prod-by:hover {
+    color: var(--gold);
+  }
+
+  /* SCROLL INDICATOR */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(10px); }
+  }
+
+  .scroll-indicator::before {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(180deg, transparent 0%, var(--gold) 100%);
+    margin: 0 auto 10px;
+  }
+
+  .scroll-text {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* SOCIAL MEDIA LINKS */
+  .social-links {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    z-index: 1000;
+  }
+
+  .social-link {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(26, 26, 26, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 50%;
+    color: var(--gold);
+    transition: all 0.4s ease;
+    text-decoration: none;
+  }
+
+  .social-link:hover {
+    background: var(--gold);
+    color: var(--dark);
+    transform: translateX(-5px);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+  }
+
+  .social-link svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav {
+      padding: 1.5rem 2rem;
+    }
+
+    .nav-links {
+      display: none;
+    }
+
+    .about {
+      padding: 4rem 2rem;
+    }
+
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .about-text {
+      padding: 2rem;
+      margin: 3rem auto;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+    }
+
+    .services {
+      padding: 4rem 2rem;
+    }
+
+    .services-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .service-card {
+      padding: 2.5rem 2rem;
+    }
+
+    .service-icon {
+      width: 70px;
+      height: 70px;
+    }
+
+    .service-card h3 {
+      font-size: 1.6rem;
+    }
+
+    .contact {
+      padding: 4rem 2rem;
+    }
+
+    .contact-content {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .contact-info {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .contact-item {
+      padding: 2rem 1.5rem;
+    }
+
+    .contact-map {
+      min-height: 400px;
+    }
+
+    .social-links {
+      bottom: 1rem;
+      right: 1rem;
+    }
+
+    .social-link {
+      width: 45px;
+      height: 45px;
+    }
+
+    footer {
+      padding: 3rem 2rem;
+    }
+
+    .footer-links {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- STARS BACKGROUND -->
+<div class="stars" id="stars"></div>
+
+<!-- SOCIAL MEDIA LINKS -->
+<div class="social-links">
+  <a href="https://www.instagram.com/esinvestgayrimenkul/" target="_blank" rel="noopener noreferrer" class="social-link instagram">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+    </svg>
+  </a>
+  <a href="https://www.linkedin.com/company/es-i%CC%87nvest-real-estate/" target="_blank" rel="noopener noreferrer" class="social-link linkedin">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+    </svg>
+  </a>
+  <a href="https://esinvestgayrimenkul.sahibinden.com/" target="_blank" rel="noopener noreferrer" class="social-link sahibinden">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+      <text x="12" y="18" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="currentColor">S</text>
+    </svg>
+  </a>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="content-wrapper">
+  
+  <!-- NAVIGATION -->
+  <nav>
+    <div class="logo">
+      <img src="logo.png" alt="ES INVEST" />
+    </div>
+    <ul class="nav-links">
+      <li><a href="#home">Ana Sayfa</a></li>
+      <li><a href="#about">Hakkımızda</a></li>
+      <li><a href="#services">Hizmetlerimiz</a></li>
+      <li><a href="#contact">İletişim</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero" id="home">
+    <!-- ANIMATED BACKGROUND - Only on hero -->
+    <div class="particles" id="particles"></div>
+    <div class="silhouette-container">
+      <div class="silhouette-clip" id="clip"></div>
+    </div>
+    
+    <div class="hero-content">
+      <h1>
+        Hayalinizdeki Yaşam
+        <span class="highlight">Burada Başlıyor</span>
+      </h1>
+      <p>
+        Türkiye'nin en prestijli lokasyonlarında, özenle seçilmiş lüks gayrimenkuller.
+        Her detayın mükemmelliği yansıttığı, yaşam tarzınızı tanımlayan adresler.
+      </p>
+      <a href="#contact" class="cta-button">Bize Ulaşın</a>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-text">Keşfet</div>
+    </div>
+  </section>
+
+  <!-- ABOUT SECTION -->
+  <section class="about" id="about">
+    <div class="about-container">
+      <div class="about-content">
+        <h2 class="section-title">Hakkımızda</h2>
+        <p class="section-subtitle">Mükemmelliğin Adresi</p>
+        
+        <div class="about-grid">
+          <div class="about-feature">
+            <div class="feature-icon"></div>
+            <h3>Prestij & Lüks</h3>
+            <p>Türkiye'nin en prestijli lokasyonlarında, özenle seçilmiş gayrimenkul portföyü ile hizmetinizdeyiz.</p>
+          </div>
+          
+          <div class="about-feature">
+            <div class="feature-icon"></div>
+            <h3>Uzman Kadro</h3>
+            <p>15 yılı aşkın deneyime sahip, sektörün en deneyimli danışmanları ile profesyonel hizmet.</p>
+          </div>
+          
+          <div class="about-feature">
+            <div class="feature-icon"></div>
+            <h3>Özel Çözümler</h3>
+            <p>Her müşterimize özel, ihtiyaçlarına göre tasarlanmış kişiselleştirilmiş gayrimenkul danışmanlığı.</p>
+          </div>
+        </div>
+        
+        <div class="about-text">
+          <p>
+            Evinizi veya işyerinizi bulmak veya satmak büyük bir karar ve <strong>Esinvest Gayrimenkul</strong> olarak sizin yanınızdayız. 
+            Esinvest Gayrimenkul, müşterilerimize mükemmel hizmet sunma konusunda uzmanlaşmış bir gayrimenkul ofisidir. 
+            Sektördeki deneyimimiz ve uzmanlığımızla, her adımda size rehberlik ediyoruz ve hedeflerinize ulaşmanıza yardımcı oluyoruz.
+          </p>
+          
+          <h3 style="color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 2rem 0 1.5rem 0; font-weight: 500;">
+            Neden Esinvest Gayrimenkul?
+          </h3>
+          
+          <p>
+            <strong>Uzmanlık:</strong> Ekibimiz, gayrimenkul sektöründe derinlemesine bir bilgi ve deneyime sahiptir. 
+            Size en iyi hizmeti sunmak için sürekli olarak sektördeki gelişmeleri takip ediyoruz.
+          </p>
+          
+          <p>
+            <strong>Bireysel Yaklaşım:</strong> Her müşteri benzersizdir ve ihtiyaçlarınızı anlamak için size özel bir yaklaşım benimseriz. 
+            Sizlerin beklentilerini aşmak için çalışıyoruz.
+          </p>
+          
+          <p>
+            <strong>Geniş Ağ:</strong> Esinvest Gayrimenkul olarak, geniş bir ağa sahibiz ve sadece sizin için en uygun olanı bulmanıza 
+            yardımcı olmak için çeşitli kaynaklara erişim sağlıyoruz.
+          </p>
+          
+          <p style="margin-top: 2rem; font-size: 1.2rem; color: var(--gold-light);">
+            Profesyonel ve samimi ekibimiz, size en iyi hizmeti sunmak için burada. 
+            <strong>Hayalinizdeki evi veya işyerini bulmak için Esinvest Gayrimenkul size bir telefon kadar yakın!</strong>
+          </p>
+        </div>
+        
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-number">500+</div>
+            <div class="stat-label">Tamamlanan Satış</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">₺20.5M</div>
+            <div class="stat-label">Ortalama Satış Değeri</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">15+</div>
+            <div class="stat-label">Yıllık Deneyim</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">99%</div>
+            <div class="stat-label">Müşteri Memnuniyeti</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES SECTION -->
+  <section class="services" id="services">
+    <div class="services-container">
+      <h2 class="section-title">Hizmetlerimiz</h2>
+      <p class="section-subtitle">Profesyonel Gayrimenkul Çözümleri</p>
+      
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+          </div>
+          <h3>Satış ve Kiralama</h3>
+          <p>
+            Evinizi satmak veya kiralamak mı istiyorsunuz? Esinvest Gayrimenkul olarak, 
+            sizin için en uygun alıcıyı veya kiracıyı bulmak için çalışıyoruz.
+          </p>
+          <ul class="service-features">
+            <li>Profesyonel fotoğraf çekimi</li>
+            <li>Online platformlarda tanıtım</li>
+            <li>Müşteri görüşmelerinin yönetimi</li>
+            <li>Hukuki süreçlerde destek</li>
+            <li>Pazar değeri analizi</li>
+          </ul>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+            </svg>
+          </div>
+          <h3>Gayrimenkul Danışmanlığı</h3>
+          <p>
+            Gayrimenkul yatırımı konusunda bilgi almak mı istiyorsunuz? 
+            Size en uygun yatırım fırsatlarını değerlendirmenizde yardımcı olabiliriz.
+          </p>
+          <ul class="service-features">
+            <li>Yatırım fırsatları analizi</li>
+            <li>Portföy değerlendirmesi</li>
+            <li>Risk analizi ve önerileri</li>
+            <li>Gelecek projeksiyonları</li>
+            <li>Finansman seçenekleri</li>
+          </ul>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 3v18h18"></path>
+              <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path>
+            </svg>
+          </div>
+          <h3>Pazar Analizi</h3>
+          <p>
+            Sektördeki en güncel bilgilere dayanarak size en uygun fiyatı belirlemek için 
+            detaylı pazar analizi yapıyoruz.
+          </p>
+          <ul class="service-features">
+            <li>Bölgesel fiyat analizi</li>
+            <li>Pazar trendleri raporu</li>
+            <li>Rekabet analizi</li>
+            <li>Değer artış potansiyeli</li>
+            <li>Satış süresi tahmini</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="about-text" style="margin-top: 5rem;">
+        <p style="font-size: 1.2rem; color: var(--gold-light);">
+          Evinizi satmak veya kiralamak, yatırım yapmak veya sadece gayrimenkul konusunda bilgi almak için bize ulaşın! 
+          Profesyonel ve samimi ekibimiz, size en iyi hizmeti sunmak için burada.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section class="contact" id="contact">
+    <div class="contact-container">
+      <h2 class="section-title">İletişim</h2>
+      <p class="section-subtitle">Size Ulaşmak İçin</p>
+      
+      <div class="contact-content">
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <div class="contact-details">
+              <h4>Adres</h4>
+              <p>Kızılırmak, 06510 YDA CENTER<br>7'nci Kat 250 Numara<br>Çankaya / Ankara</p>
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+            </div>
+            <div class="contact-details">
+              <h4>Telefon</h4>
+              <p>+90 546 766 94 64</p>
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+            </div>
+            <div class="contact-details">
+              <h4>Uzmanlık Bölgesi</h4>
+              <p>Gölbaşı, Çukurambar, Yaşamkent,<br>Çayyolu, Bahçelievler</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Google Maps -->
+        <div class="contact-map">
+          <iframe 
+            src="https://www.google.com/maps?q=YDA+Center+Kızılırmak+Çankaya+Ankara&output=embed"
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-logo">ES INVEST</div>
+      <p class="footer-text">
+        Türkiye'nin en prestijli gayrimenkul portföyünü sunan,
+        lüks yaşam danışmanlığında öncü kuruluş.
+      </p>
+      <ul class="footer-links">
+        <li><a href="#home">Ana Sayfa</a></li>
+        <li><a href="#about">Hakkımızda</a></li>
+        <li><a href="#services">Hizmetlerimiz</a></li>
+        <li><a href="#contact">İletişim</a></li>
+      </ul>
+      <div class="copyright">
+        © 2026 ES INVEST REAL ESTATE. TÜM HAKLARI SAKLIDIR.
+        <br>
+        <a href="https://missocialagency.com.tr/" target="_blank" rel="noopener noreferrer" class="prod-by">prod by missocialagency</a>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // Stars background
+  const starsContainer = document.getElementById("stars");
+  const starCount = 100;
+  
+  for (let i = 0; i < starCount; i++) {
+    const star = document.createElement("div");
+    star.className = "star";
+    
+    // Random positioning
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    
+    // Random animation duration and delay for twinkling
+    const duration = 2 + Math.random() * 4;
+    star.style.animationDuration = duration + 's';
+    star.style.animationDelay = Math.random() * 5 + 's';
+    
+    // Random size
+    const size = 1 + Math.random() * 2;
+    star.style.width = size + 'px';
+    star.style.height = size + 'px';
+    
+    starsContainer.appendChild(star);
+  }
+
+  // Add shooting stars
+  setInterval(() => {
+    const shootingStar = document.createElement("div");
+    shootingStar.className = "star shooting";
+    shootingStar.style.left = Math.random() * 100 + '%';
+    shootingStar.style.top = Math.random() * 50 + '%';
+    shootingStar.style.width = '3px';
+    shootingStar.style.height = '3px';
+    shootingStar.style.boxShadow = '0 0 6px rgba(255, 255, 255, 1), 0 0 10px rgba(212, 175, 55, 0.5)';
+    
+    starsContainer.appendChild(shootingStar);
+    
+    setTimeout(() => {
+      shootingStar.remove();
+    }, 3000);
+  }, 5000);
+
+  // Background animation - Mountain lines
+  const clip = document.getElementById("clip");
+  const screenWidth = window.innerWidth;
+  const lineSpacing = 18;
+  const lineCount = Math.ceil(screenWidth / lineSpacing);
+  
+  for (let i = 0; i < lineCount; i++) {
+    const line = document.createElement("div");
+    line.className = "line";
+    line.style.left = (i * lineSpacing) + "px";
+    line.style.animationDelay = `${i * 0.015}s`;
+    clip.appendChild(line);
+  }
+
+  // Floating particles
+  const particlesContainer = document.getElementById("particles");
+  const particleCount = 30;
+  
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElement("div");
+    particle.className = "particle";
+    
+    // Random positioning
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.setProperty('--drift', (Math.random() * 100 - 50) + 'px');
+    
+    // Random animation duration (slower particles)
+    const duration = 15 + Math.random() * 20;
+    particle.style.animationDuration = duration + 's';
+    
+    // Random delay
+    particle.style.animationDelay = Math.random() * 10 + 's';
+    
+    // Random size
+    const size = 1 + Math.random() * 2;
+    particle.style.width = size + 'px';
+    particle.style.height = size + 'px';
+    
+    particlesContainer.appendChild(particle);
+  }
+
+  window.addEventListener('resize', () => {
+    location.reload();
+  });
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
