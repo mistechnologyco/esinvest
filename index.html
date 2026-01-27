@@ -31,19 +31,18 @@
     position: relative;
   }
 
-  /* Subtle fog/blur overlay */
+  /* Subtle fog/blur overlay - optimized */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
     background: 
-      radial-gradient(circle at 30% 40%, rgba(26, 26, 26, 0.4) 0%, transparent 60%),
-      radial-gradient(circle at 70% 60%, rgba(26, 26, 26, 0.3) 0%, transparent 60%),
-      radial-gradient(circle at 50% 80%, rgba(26, 26, 26, 0.5) 0%, transparent 50%);
-    backdrop-filter: blur(80px);
+      radial-gradient(circle at 30% 40%, rgba(26, 26, 26, 0.3) 0%, transparent 60%),
+      radial-gradient(circle at 70% 60%, rgba(26, 26, 26, 0.2) 0%, transparent 60%);
+    backdrop-filter: blur(20px); /* Reduced from 80px to 20px */
     z-index: 0;
     pointer-events: none;
-    opacity: 0.6;
+    opacity: 0.4; /* Reduced opacity */
   }
 
   /* ANIMATED BACKGROUND */
@@ -461,9 +460,9 @@
   .about-feature {
     padding: 3rem 2rem;
     background: rgba(26, 26, 26, 0.4);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px); /* Reduced from 10px */
     border: 1px solid rgba(212, 175, 55, 0.2);
-    transition: all 0.5s ease;
+    transition: all 0.3s ease; /* Faster transition */
     position: relative;
     overflow: hidden;
   }
@@ -552,7 +551,7 @@
     text-align: center;
     padding: 3rem;
     background: rgba(26, 26, 26, 0.3);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px); /* Reduced from 10px */
     border-left: 3px solid var(--gold);
     border-right: 3px solid var(--gold);
   }
@@ -1381,9 +1380,9 @@
 </div>
 
 <script>
-  // Stars background
+  // Optimized Stars background - reduced count
   const starsContainer = document.getElementById("stars");
-  const starCount = 100;
+  const starCount = 30; // Reduced from 100 to 30
   
   for (let i = 0; i < starCount; i++) {
     const star = document.createElement("div");
@@ -1394,52 +1393,52 @@
     star.style.top = Math.random() * 100 + '%';
     
     // Random animation duration and delay for twinkling
-    const duration = 2 + Math.random() * 4;
+    const duration = 3 + Math.random() * 3; // Slower animations
     star.style.animationDuration = duration + 's';
     star.style.animationDelay = Math.random() * 5 + 's';
     
     // Random size
-    const size = 1 + Math.random() * 2;
+    const size = 1 + Math.random() * 1.5;
     star.style.width = size + 'px';
     star.style.height = size + 'px';
     
     starsContainer.appendChild(star);
   }
 
-  // Add shooting stars
+  // Reduced shooting stars frequency
   setInterval(() => {
     const shootingStar = document.createElement("div");
     shootingStar.className = "star shooting";
     shootingStar.style.left = Math.random() * 100 + '%';
     shootingStar.style.top = Math.random() * 50 + '%';
-    shootingStar.style.width = '3px';
-    shootingStar.style.height = '3px';
-    shootingStar.style.boxShadow = '0 0 6px rgba(255, 255, 255, 1), 0 0 10px rgba(212, 175, 55, 0.5)';
+    shootingStar.style.width = '2px';
+    shootingStar.style.height = '2px';
+    shootingStar.style.boxShadow = '0 0 4px rgba(255, 255, 255, 0.8)';
     
     starsContainer.appendChild(shootingStar);
     
     setTimeout(() => {
       shootingStar.remove();
     }, 3000);
-  }, 5000);
+  }, 8000); // Increased from 5000 to 8000
 
-  // Background animation - Mountain lines
+  // Optimized Background animation - reduced lines
   const clip = document.getElementById("clip");
   const screenWidth = window.innerWidth;
-  const lineSpacing = 18;
+  const lineSpacing = 25; // Increased spacing to reduce line count
   const lineCount = Math.ceil(screenWidth / lineSpacing);
   
   for (let i = 0; i < lineCount; i++) {
     const line = document.createElement("div");
     line.className = "line";
     line.style.left = (i * lineSpacing) + "px";
-    line.style.animationDelay = `${i * 0.015}s`;
+    line.style.animationDelay = `${i * 0.02}s`;
     clip.appendChild(line);
   }
 
-  // Floating particles
+  // Reduced floating particles
   const particlesContainer = document.getElementById("particles");
-  const particleCount = 30;
+  const particleCount = 15; // Reduced from 30 to 15
   
   for (let i = 0; i < particleCount; i++) {
     const particle = document.createElement("div");
@@ -1447,16 +1446,18 @@
     
     // Random positioning
     particle.style.left = Math.random() * 100 + '%';
-    particle.style.setProperty('--drift', (Math.random() * 100 - 50) + 'px');
+    particle.style.setProperty('--drift', (Math.random() * 50 - 25) + 'px'); // Reduced drift range
     
-    // Random animation duration (slower particles)
-    const duration = 15 + Math.random() * 20;
+    // Slower animation duration
+    const duration = 20 + Math.random() * 15; // Increased duration
     particle.style.animationDuration = duration + 's';
     
     // Random delay
-    particle.style.animationDelay = Math.random() * 10 + 's';
+    particle.style.animationDelay = Math.random() * 15 + 's';
     
-    // Random size
+    particlesContainer.appendChild(particle);
+  }
+</script>andom size
     const size = 1 + Math.random() * 2;
     particle.style.width = size + 'px';
     particle.style.height = size + 'px';
